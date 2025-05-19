@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'redefinir_senha_page.dart';
 import 'dados_pessoais_page.dart';
-
+import 'home_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -119,7 +119,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () { Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomeScreen(),
+                    ),
+                  );},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber[700],
                     shape: RoundedRectangleBorder(
