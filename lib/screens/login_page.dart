@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'redefinir_senha_page.dart';
-import 'dados_pessoais_page.dart';
 import 'home_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -12,7 +11,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _rememberMe = false;
+  bool _obscurePassword = true;
+
+  void _handleLogin() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,34 +28,41 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 80),
-              // Logo
-              Image.asset(
-                'assets/barbearia.png',
-                height: 120,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 60),
+              Center(
+                child: Image.asset(
+                  'assets/barbearia.png',
+                  height: 120,
+                ),
               ),
-
               const SizedBox(height: 40),
-              const Text(
-                'Acesse sua conta',
+              Text(
+                'Bem vindo de volta!',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.grey[300],
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 40),
-              // Email Field
+              const SizedBox(height: 8),
+              Text(
+                'Faça login para continuar',
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 32),
               TextField(
                 controller: _emailController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'E-mail',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintStyle: TextStyle(color: Colors.grey[600]),
                   filled: true,
-                  fillColor: Colors.grey[900],
+                  fillColor: Colors.grey[800],
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -58,73 +71,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Password Field
               TextField(
                 controller: _passwordController,
-                obscureText: true,
+                obscureText: _obscurePassword,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: 'Senha',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  hintStyle: TextStyle(color: Colors.grey[600]),
                   filled: true,
-                  fillColor: Colors.grey[900],
+                  fillColor: Colors.grey[800],
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
                   ),
                   contentPadding: const EdgeInsets.all(16),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.grey[600],
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
                 ),
               ),
-              const SizedBox(height: 16),
-              // Remember me and Forgot password
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _rememberMe,
-                        onChanged: (value) {
-                          setState(() {
-                            _rememberMe = value ?? false;
-                          });
-                        },
-                        fillColor: WidgetStateProperty.all(Colors.amber[700]),
-                      ),
-                      Text(
-                        'Entrar sem login',
-                        style: TextStyle(color: Colors.grey[400]),
-                      ),
-                    ],
-                  ),
-                                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RedefinirSenhaScreen(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      'Esqueci a senha',
-                      style: TextStyle(color: Colors.amber[700]),
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 24),
-              // Login Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () { Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeScreen(),
-                    ),
-                  );},
+                  onPressed: _handleLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.amber[700],
                     shape: RoundedRectangleBorder(
@@ -136,38 +115,94 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 24),
-              // Create Account Button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: OutlinedButton(
+              Center(
+                child: TextButton(
                   onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => const DadosPessoaisPage(),
-    ),
-  );
-},
-
+                    // Redefinir senha (adicione navegação aqui)
+                  },
                   child: Text(
-                    'Criar conta',
+                    'Esqueceu a senha?',
                     style: TextStyle(
                       color: Colors.amber[700],
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
                     ),
                   ),
                 ),
               ),
+              const SizedBox(height: 32),
+              Row(
+                children: [
+                  Expanded(child: Divider(color: Colors.grey[800])),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Ou continue com',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  Expanded(child: Divider(color: Colors.grey[800])),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: _socialButton(
+                      'assets/google.png',
+                      'Google',
+                      () {},
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _socialButton(
+                      'assets/apple.png',
+                      'Apple',
+                      () {},
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _socialButton(String icon, String label, VoidCallback onPressed) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        side: BorderSide(color: Colors.grey[800]!),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(icon, height: 20),
+          const SizedBox(width: 8),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.grey[300],
+              fontSize: 14,
+            ),
+          ),
+        ],
       ),
     );
   }
