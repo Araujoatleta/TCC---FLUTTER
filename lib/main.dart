@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
-import 'screens/login_page.dart';
-import 'screens/dados_pessoais_page.dart'; // crie essa tela depois
-import 'screens/redefinir_senha_page.dart'; // crie essa depois também
-import 'screens/dados_invalidos_page.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'app.dart';
+import 'services/auth_service.dart';
 
 void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BarbersClub',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Arial',
-        scaffoldBackgroundColor: const Color(0xFF121212),
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const LoginScreen(),
-        '/dados': (context) => const DadosPessoaisPage(),
-        '/redefinir-senha': (context) => const RedefinirSenhaScreen(),
-        '/dados-invalidos': (context) => const DadosInvalidosPage(),
-      },
-    );
-  }
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Force portrait mode
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  
+  // Set system UI overlay style
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.black,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
+  
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthService()),
+      ],
+      child: const BarberShopApp(),
+    ),
+  );
 }

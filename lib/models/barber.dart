@@ -2,35 +2,46 @@ class Barber {
   final String id;
   final String name;
   final String imageUrl;
-  final String specialty;
   final double rating;
-  final int reviews;
+  final double originalPrice;
+  final double discountPrice;
+  final List<String> specialties;
+  final bool isPopular;
 
   Barber({
     required this.id,
     required this.name,
     required this.imageUrl,
-    required this.specialty,
     required this.rating,
-    required this.reviews,
+    required this.originalPrice,
+    required this.discountPrice,
+    required this.specialties,
+    this.isPopular = false,
   });
-}
 
-final List<Barber> barbers = [
-  Barber(
-    id: '1',
-    name: 'Maicon',
-    imageUrl: 'https://images.pexels.com/photos/1805600/pexels-photo-1805600.jpeg',
-    specialty: 'Corte Degradê',
-    rating: 4.8,
-    reviews: 128,
-  ),
-  Barber(
-    id: '2',
-    name: 'Pedro',
-    imageUrl: 'https://images.pexels.com/photos/2061820/pexels-photo-2061820.jpeg',
-    specialty: 'Barba',
-    rating: 4.7,
-    reviews: 98,
-  ),
-];
+  factory Barber.fromJson(Map<String, dynamic> json) {
+    return Barber(
+      id: json['id'],
+      name: json['name'],
+      imageUrl: json['imageUrl'],
+      rating: json['rating'].toDouble(),
+      originalPrice: json['originalPrice'].toDouble(),
+      discountPrice: json['discountPrice'].toDouble(),
+      specialties: List<String>.from(json['specialties']),
+      isPopular: json['isPopular'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'imageUrl': imageUrl,
+      'rating': rating,
+      'originalPrice': originalPrice,
+      'discountPrice': discountPrice,
+      'specialties': specialties,
+      'isPopular': isPopular,
+    };
+  }
+}
